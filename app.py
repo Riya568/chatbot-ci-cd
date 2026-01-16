@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, render_template
+import os
 
 app = Flask(__name__)
 
@@ -7,21 +8,20 @@ def get_bot_reply(message):
     if "hello" in msg or "hi" in msg:
         return "Hello! I am your CI/CD demo chatbot 🤖"
     elif "name" in msg:
-        return "I am a chatbot running on Google Cloud Run."
+        return "I am running on Google Cloud Run."
     else:
         return "Sorry, I don't understand yet."
 
+# Frontend
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+# API
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()
-    user_msg = data.get("message", "")
-    reply = get_bot_reply(user_msg)
-    return jsonify({"reply": reply})
-
-# Serve frontend
-@app.route("/")
-def home():
-    return "Chatbot service is running 🚀"
+    return jsonify({"reply": get_bot_reply(data.get("message", ""))})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
