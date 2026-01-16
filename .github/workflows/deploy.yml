@@ -30,11 +30,14 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t us-central1-docker.pkg.dev/riya-483504/chatbot-repo/chatbot:latest .
+        docker build -t \
+        $us-central1-docker.pkg.dev/$riya-483504/chatbot-repo/chatbot:latest .
 
     - name: Push Docker image
       run: |
-        docker push us-central1-docker.pkg.dev/riya-483504/chatbot-repo/chatbot:latest
+        docker push \
+        us-central1-docker.pkg.dev/$riya-483504/chatbot-repo/chatbot:latest
+
 
 
     - name: Deploy to Cloud Run
@@ -43,3 +46,4 @@ jobs:
           --image=us-central1-docker.pkg.dev/riya-483504/chatbot-repo/chatbot:latest \
           --region=us-central1 \
           --allow-unauthenticated
+
