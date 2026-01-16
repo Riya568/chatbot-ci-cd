@@ -1,5 +1,4 @@
-from flask import Flask, request, jsonify
-import os
+from flask import Flask, request, jsonify, send_from_directory
 
 app = Flask(__name__)
 
@@ -15,9 +14,11 @@ def get_bot_reply(message):
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()
-    return jsonify({"reply": get_bot_reply(data.get("message", ""))})
+    user_msg = data.get("message", "")
+    reply = get_bot_reply(user_msg)
+    return jsonify({"reply": reply})
 
-# ✅ THIS fixes the 404 in browser
+# Serve frontend
 @app.route("/")
 def home():
     return "Chatbot service is running 🚀"
